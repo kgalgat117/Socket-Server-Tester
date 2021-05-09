@@ -8,13 +8,14 @@ export function App() {
 
   const [socketConfig, setSocketConfig] = useState({ protocol: 'http://', domain: 'localhost:3009', transports: 'polling', id: '', status: 'Disconnected', errorMsg: '' })
   const [eventData, setEventData] = useState({ name: '', data: {}, temp: { key: '', value: '' } })
+  const [receivedEvents, setReceivedEvents] = useState([])
 
   const connectToServer = () => {
     if (socketConfig.status === "Disconnected") {
       if (validateSocketConfig()) {
         const Socket = io(`${socketConfig.protocol}${socketConfig.domain}`, { transports: [socketConfig.transports] });
 
-        Socket.on('connect', (data) => {
+        Socket.on('connect', () => {
           let temp = { ...socketConfig }
           temp.status = "Connected"
           temp.id = Socket.id
@@ -25,7 +26,12 @@ export function App() {
           temp.status = 'Disconnected'
           temp.errorMsg = reason
           setSocketConfig(temp)
-        });
+        })
+        Socket.onAny((eventName, ...args) => {
+          setReceivedEvents(prevData => {
+            return [...prevData, { eventName: eventName, data: args[0], eventTime: new Date().toISOString() }]
+          })
+        })
         _Socket = Socket
       }
     } else {
@@ -162,6 +168,17 @@ export function App() {
                 <div className="col">
                   <div className="input-group mb-3">
                     <button onClick={createEvent} disabled={!validateCreateEventData()} type="button" className="btn btn-warning"> Create Event </button>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div style={{ height: '500px' }} className="bg-secondary overflow-auto">
+                    {receivedEvents.map((item, index) => (
+                      <p key={index} style={{ margin: '0px', padding: '5px', color: 'yellow' }} className="text-start">
+                        {item.eventTime} <span style={{ color: 'black' }}>: <span style={{ color: '#00ff48' }}>{item.eventName}</span>  event received !!!.</span>
+                      </p>
+                    ))}
                   </div>
                 </div>
               </div>
