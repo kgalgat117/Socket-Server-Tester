@@ -58,8 +58,29 @@ export function App() {
 
   const tempEventDataChange = (event) => {
     let temp = { ...eventData }
-    temp.temp[event.target.name] = event.target.value
+    if (event.target.name === 'name') {
+      temp.name = event.target.value
+    } else {
+      temp.temp[event.target.name] = event.target.value
+    }
     setEventData(temp)
+  }
+
+  const createEvent = () => {
+    if (validateCreateEventData()) {
+      _Socket.emit(eventData.name, eventData.data)
+    }
+  }
+
+  const validateCreateEventData = () => {
+    if (_Socket) {
+      if (socketConfig.status === 'Connected') {
+        if (eventData.name) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   return (
@@ -113,7 +134,7 @@ export function App() {
                 <div className="col-4">
                   <label htmlFor="event-name" className="form-label">Event Name</label>
                   <div className="input-group mb-3">
-                    <input type="text" className="form-control" placeholder="test" id="event-name" />
+                    <input value={eventData.name} name="name" onChange={tempEventDataChange} type="text" className="form-control" placeholder="test" id="event-name" />
                   </div>
                 </div>
                 <div className="col-8">
@@ -140,7 +161,7 @@ export function App() {
               <div className="row">
                 <div className="col">
                   <div className="input-group mb-3">
-                    <button type="button" className="btn btn-warning"> Create Event </button>
+                    <button onClick={createEvent} disabled={!validateCreateEventData()} type="button" className="btn btn-warning"> Create Event </button>
                   </div>
                 </div>
               </div>
