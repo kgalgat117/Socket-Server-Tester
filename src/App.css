@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.box {
+  background-color: #61dafb;
+}
+
+.max {
+  min-height: 100vh;
+}
