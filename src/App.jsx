@@ -29,7 +29,7 @@ export function App() {
         })
         Socket.onAny((eventName, ...args) => {
           setReceivedEvents(prevData => {
-            return [...prevData, { eventName: eventName, data: args[0], eventTime: new Date().toISOString() }]
+            return [{ eventName: eventName, data: args[0], eventTime: new Date().toISOString() }, ...prevData]
           })
         })
         _Socket = Socket
