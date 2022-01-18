@@ -176,7 +176,7 @@ export function App() {
                   <div style={{ height: '500px' }} className="bg-secondary overflow-auto">
                     {receivedEvents.map((item, index) => (
                       <p key={index} style={{ margin: '0px', padding: '5px', color: 'yellow' }} className="text-start">
-                        {item.eventTime} <span style={{ color: 'black' }}>: <span style={{ color: '#00ff48' }}>{item.eventName}</span>  event received !!!.</span>
+                        {item.eventTime} <span style={{ color: 'black' }}>: <span style={{ color: '#00ff48' }}>{item.eventName}</span> {JSON.stringify(item.data)} </span>
                       </p>
                     ))}
                   </div>
