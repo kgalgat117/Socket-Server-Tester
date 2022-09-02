@@ -6,7 +6,7 @@ var _Socket;
 
 export function App() {
 
-  const [socketConfig, setSocketConfig] = useState({ protocol: 'http://', domain: 'localhost:3009', transports: 'polling', id: '', status: 'Disconnected', errorMsg: '' })
+  const [socketConfig, setSocketConfig] = useState({ protocol: 'http://', domain: 'localhost:1025', transports: 'websocket', id: '', status: 'Disconnected', errorMsg: '' })
   const [eventData, setEventData] = useState({ name: '', data: {}, temp: { key: '', value: '' } })
   const [receivedEvents, setReceivedEvents] = useState([])
 
