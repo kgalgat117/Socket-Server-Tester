@@ -13,7 +13,20 @@ export function App() {
   const connectToServer = () => {
     if (socketConfig.status === "Disconnected") {
       if (validateSocketConfig()) {
-        const Socket = io(`${socketConfig.protocol}${socketConfig.domain}`, { transports: [socketConfig.transports] });
+        const Socket = io(`${socketConfig.protocol}${socketConfig.domain}`, {
+          transports: [socketConfig.transports],
+          auth: {
+            token: 'cd630dd09cf0e21ae25f3a8c17b235226706fbfc29b30d016064096ec07e2181'
+          },
+          extraHeaders: {
+            source: 'source_headers_test',
+            platform: 'platform_headers_test'
+          },
+          query: {
+            source: 'source_query_test',
+            platform: 'platform_query_test'
+          }
+        });
 
         Socket.on('connect', () => {
           let temp = { ...socketConfig }
